@@ -78,6 +78,13 @@ STATIC mp_obj_t esp_status() {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(esp_status_obj, esp_status);
 
+STATIC mp_obj_t esp_set_op_mode(mp_obj_t mode_in) {
+    mp_int_t mode = mp_obj_get_int(mode_in);
+    wifi_set_opmode(mode);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(esp_set_op_mode_obj, esp_set_op_mode);
+
 STATIC void esp_scan_cb(scaninfo *si, STATUS status) {
     struct bss_info *bs;
     if (si->pbss) {
@@ -116,7 +123,7 @@ STATIC const mp_map_elem_t mp_module_network_globals_table[] = {
     { MP_OBJ_NEW_QSTR(MP_QSTR_disconnect), (mp_obj_t)&esp_disconnect_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_status), (mp_obj_t)&esp_status_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_scan), (mp_obj_t)&esp_scan_obj },
-
+    { MP_OBJ_NEW_QSTR(MP_QSTR_setopmode), (mp_obj_t)&esp_set_op_mode_obj },
 #if MODNETWORK_INCLUDE_CONSTANTS
     { MP_OBJ_NEW_QSTR(MP_QSTR_STAT_IDLE),
         MP_OBJ_NEW_SMALL_INT(STATION_IDLE)},
